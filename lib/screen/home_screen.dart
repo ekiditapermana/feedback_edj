@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<FeedbackModel> feedbackList = [];
-  int limit = 10;
+  int limit = 25;
   int page = 1;
   bool isLoading = false;
 
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       feedbackList.clear();
       page = 1;
-      limit = 10;
+      limit = 25;
       isLoading = false;
     });
 

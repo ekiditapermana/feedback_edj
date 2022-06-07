@@ -3,6 +3,8 @@ import 'package:mo_opendata_v2/component/sending_option.dart';
 import 'package:mo_opendata_v2/helper/datetime_formatter.dart';
 import 'package:mo_opendata_v2/helper/string_formatter.dart';
 import 'package:mo_opendata_v2/model/feedback_model.dart';
+import 'package:mo_opendata_v2/screen/home_screen.dart';
+import 'package:mo_opendata_v2/service/feedback_service.dart';
 
 class DetailScreen extends StatefulWidget {
   final FeedbackModel feedback;
@@ -16,8 +18,8 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  TextEditingController notesController = TextEditingController(text: '');
-  bool submitting = false;
+  final TextEditingController _notesController =
+      TextEditingController(text: '');
 
   List<String> members = [
     'Tutus',
@@ -56,34 +58,103 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 2,
         centerTitle: true,
         title: const Text('Feedback Detail'),
-        actions: [
-          PopupMenuButton(
-            onSelected: (value) {
-              //TODO: updateStatus
-            },
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                value: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    Icon(
-                      Icons.check,
-                      color: Colors.green,
+        actions: widget.feedback.status
+            ? null
+            : [
+                PopupMenuButton(
+                  onSelected: (value) {
+                    _updateStatus(context);
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: const [
+                          Icon(
+                            Icons.check,
+                            color: Colors.green,
+                          ),
+                          Text('Mark as Done'),
+                        ],
+                      ),
                     ),
-                    Text('Mark as Done'),
                   ],
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
       ),
       body: SafeArea(
         child: _listView(context),
+      ),
+    );
+  }
+
+  Future<dynamic> _updateStatus(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        insetPadding: const EdgeInsets.all(10),
+        contentPadding: const EdgeInsets.only(
+          left: 24,
+          right: 24,
+          bottom: 24,
+        ),
+        title: const Text('Add Notes'),
+        content: SizedBox(
+          height: 140,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _notesController,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  minLines: 1,
+                  maxLines: 2,
+                  maxLength: 50,
+                  decoration: const InputDecoration(
+                    counterText: '',
+                    hintText: 'Add notes here...',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 45,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final fs = FeedbackService();
+                    final result = await fs.updateStatus(
+                      no: widget.feedback.no,
+                      notes: _notesController.text,
+                    );
+
+                    if (result['ok']) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => const HomeScreen(),
+                        ),
+                        (route) => false,
+                      );
+                    }
+                  },
+                  child: const Text(
+                    'Submit',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -222,23 +293,25 @@ class _DetailScreenState extends State<DetailScreen> {
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
             height: 45,
-            child: ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => SendingOption(
-                    feedback: widget.feedback,
+            child: widget.feedback.status
+                ? const SizedBox()
+                : ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => SendingOption(
+                          feedback: widget.feedback,
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Send',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                );
-              },
-              child: const Text(
-                'Send',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
           ),
         )
       ],

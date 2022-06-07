@@ -5,7 +5,7 @@ import 'package:mo_opendata_v2/model/feedback_model.dart';
 
 class FeedbackService {
   static String baseUrl =
-      'https://script.google.com/macros/s/AKfycbxeqYlkSJbgA7QQV099_CLVw66Krjfv81IWXYyuPh_-yPXIiIzzO1SK6u7tCJkU6EEPdg/exec';
+      'https://script.google.com/macros/s/AKfycbxfpwOBNj60jWjmTSggfSJrplmbD7r5myBl8ZjMaqyZhjHxM_BtEv6k4BPNoeEqJrzHEw/exec';
 
   Future<List<FeedbackModel>> getFeedbackList({
     required int limit,
@@ -38,11 +38,11 @@ class FeedbackService {
   }
 
   Future<Map<String, dynamic>> updateStatus({
-    required String sheetName,
     required int no,
+    required String notes,
   }) async {
     try {
-      var url = Uri.parse('$baseUrl?status=sent');
+      var url = Uri.parse(baseUrl);
 
       Map<String, dynamic> result = {};
       await http
@@ -51,8 +51,8 @@ class FeedbackService {
         headers: {'Content-Type': 'application/json'},
         body: convert.jsonEncode(
           <String, dynamic>{
-            'sheet_name': sheetName,
             'no': no,
+            'notes': notes,
           },
         ),
       )
