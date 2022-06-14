@@ -6,11 +6,13 @@ import 'package:mo_opendata_v2/service/feedback_service.dart';
 class AddNotes extends StatefulWidget {
   final int no;
   final TextEditingController notesController;
+  // final FutureBuilder<Map<String, dynamic>> update;
 
   const AddNotes({
     Key? key,
     required this.no,
     required this.notesController,
+    // required this.update,
   }) : super(key: key);
 
   @override
@@ -77,9 +79,10 @@ class _AddNotesState extends State<AddNotes> {
           child: ElevatedButton(
             onPressed: () {
               showDialog(
+                  barrierDismissible: false,
                   context: context,
                   builder: (context) {
-                    return progressUPdate();
+                    return update(context);
                   });
             },
             child: const Text('Submit'),
@@ -89,17 +92,19 @@ class _AddNotesState extends State<AddNotes> {
     );
   }
 
-  FutureBuilder<Map<String, dynamic>> progressUPdate() {
+  FutureBuilder<Map<String, dynamic>> update(BuildContext context) {
     return FutureBuilder(
       future: updateStatus(no: widget.no, notes: widget.notesController.text),
       builder: (context, snapshot) {
         Widget child;
         if (snapshot.hasData) {
-          child =
-              ResponseMessage(message: snapshot.data!['message'].toString());
+          child = ResponseMessage(
+              isOk: snapshot.data!['ok'],
+              message: snapshot.data!['message'].toString());
         } else if (snapshot.hasError) {
-          child =
-              ResponseMessage(message: snapshot.data!['message'].toString());
+          child = ResponseMessage(
+              isOk: snapshot.data!['ok'],
+              message: snapshot.data!['message'].toString());
         } else {
           child = const LoadingIndicator();
         }

@@ -37,7 +37,10 @@ class _DetailScreenState extends State<DetailScreen> {
       onSelected: (value) {
         showDialog(
           context: context,
-          builder: (context) => AddNotes(no: widget.feedback.no, notesController: _notesController),
+          builder: (context) => AddNotes(
+            no: widget.feedback.no,
+            notesController: _notesController,
+          ),
         );
       },
       itemBuilder: (context) => [

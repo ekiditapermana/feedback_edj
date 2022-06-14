@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mo_opendata_v2/screen/dashboard_screen.dart';
 import 'package:mo_opendata_v2/screen/home_screen.dart';
 
 void main() {
