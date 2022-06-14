@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mo_opendata_v2/screen/clickup_tasklist_screen.dart';
-import 'package:mo_opendata_v2/screen/home_screen.dart';
+import 'package:mo_opendata_v2/screen/main_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: const TaskList(),
+      home: const MainScreen(),
     );
   }
 }

@@ -61,9 +61,36 @@ class _TaskListState extends State<TaskList> {
                   return Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: ListTile(
-                      title: Text(
-                        taskList[index].name,
-                        style: const TextStyle(fontSize: 20),
+                      title: Column(
+                        children: [
+                          Row(
+                            children: [
+                              const Text(
+                                'Project: ',
+                                style: TextStyle(fontSize: 22),
+                              ),
+                              Text(
+                                taskList[index].projectName,
+                                style: const TextStyle(fontSize: 22),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Row(
+                            children: [
+                              const Text(
+                                'Subtask: ',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              Text(
+                                taskList[index].name,
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       subtitle: subtask(index, context),
                     ),

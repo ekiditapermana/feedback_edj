@@ -1,17 +1,20 @@
 class ClickUpModel {
   final String id;
   final String name;
+  final String projectName;
   final List<Subtask> subtasks;
 
   ClickUpModel({
     required this.id,
     required this.name,
+    required this.projectName,
     required this.subtasks,
   });
 
   factory ClickUpModel.fromJson(Map<String, dynamic> json) => ClickUpModel(
         id: json['id'],
         name: json['name'],
+        projectName: json['project']['name'],
         subtasks: List<Subtask>.from(json['subtasks'].map(
           (subtask) => Subtask.fromJson(subtask),
         )),
