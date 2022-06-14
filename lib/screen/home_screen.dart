@@ -13,16 +13,27 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<FeedbackModel> feedbackList = [];
-  int limit = 25;
+  int limit = 15;
   int page = 1;
   bool isLoading = false;
+  bool hasMore = true;
+
+  final scrollController = ScrollController();
 
   Future fetch() async {
     isLoading = true;
     final fs = FeedbackService();
     final newItems = await fs.getFeedbackList(limit: limit, page: page);
+
     setState(() {
+      page++;
+
       isLoading = false;
+
+      if (newItems.isEmpty) {
+        hasMore = false;
+      }
+
       feedbackList.addAll(newItems);
     });
   }
@@ -33,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
       page = 1;
       limit = 25;
       isLoading = false;
+      hasMore = true;
     });
 
     fetch();
@@ -43,6 +55,20 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     fetch();
+
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.offset) {
+        fetch();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -50,7 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Feedback List'),
-        
       ),
       body: isLoading
           ? const Center(
@@ -65,8 +90,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ListView _listview() {
     return ListView.builder(
+      controller: scrollController,
+      itemCount: feedbackList.length + 1,
       itemBuilder: ((context, index) {
-        return ListTile(
+        if (index < feedbackList.length) {
+          return ListTile(
             onTap: () {
               Navigator.push(
                 context,
@@ -82,9 +110,23 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             title: Text(feedbackList[index].kontak),
             subtitle: Text(feedbackList[index].sektor),
-            trailing: _indicator(index));
+            trailing: _indicator(index),
+          );
+        }
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: hasMore
+              ? const Center(child: CircularProgressIndicator())
+              : const Center(
+                  child: Text(
+                    'No more data to load',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+        );
       }),
-      itemCount: feedbackList.length,
     );
   }
 

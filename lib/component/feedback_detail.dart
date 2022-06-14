@@ -181,17 +181,19 @@ class _FeedbackDetailState extends State<FeedbackDetail> {
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
             height: 45,
-            child: widget.feedback.status || widget.feedback.catatanMO.isEmpty
+            child: widget.feedback.status
                 ? const SizedBox()
                 : ElevatedButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => SendingOption(
-                          feedback: widget.feedback,
-                        ),
-                      );
-                    },
+                    onPressed: widget.feedback.catatanMO.isEmpty
+                        ? null
+                        : () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => SendingOption(
+                                feedback: widget.feedback,
+                              ),
+                            );
+                          },
                     child: const Text(
                       'Send',
                       style: TextStyle(

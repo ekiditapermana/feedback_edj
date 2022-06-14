@@ -5,7 +5,7 @@ import 'package:mo_opendata_v2/model/feedback_model.dart';
 
 class FeedbackService {
   static String baseUrl =
-      'https://script.google.com/macros/s/AKfycbxfpwOBNj60jWjmTSggfSJrplmbD7r5myBl8ZjMaqyZhjHxM_BtEv6k4BPNoeEqJrzHEw/exec';
+      'https://script.google.com/macros/s/AKfycbxwyXqDCqh7RtxRwMqR9SjX5h8tWo8TRTdmiVWQp9Jk8dYACkKKKmBFMWnxUD4cq195fw/exec';
 
   Future<List<FeedbackModel>> getFeedbackList({
     required int limit,
@@ -23,10 +23,6 @@ class FeedbackService {
 
         final feedbackList =
             data.map((json) => FeedbackModel.fromJson(json)).toList();
-
-        if (feedbackList.isEmpty) {
-          throw Exception();
-        }
 
         return feedbackList;
       } else {
