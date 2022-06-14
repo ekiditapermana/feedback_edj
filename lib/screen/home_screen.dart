@@ -109,7 +109,12 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(getAcronym(feedbackList[index].sektor)),
             ),
             title: Text(feedbackList[index].kontak),
-            subtitle: Text(feedbackList[index].sektor),
+            subtitle: feedbackList[index].saran.isNotEmpty
+                ? Text(
+                    feedbackList[index].saran,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                : const Text('Kolom saran dikosongkan'),
             trailing: _indicator(index),
           );
         }

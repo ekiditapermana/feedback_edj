@@ -84,9 +84,6 @@ class _FeedbackDetailState extends State<FeedbackDetail> {
                                 widget.feedback.tanggal, 'EEEE, d MMMM yyyy')
                             .toString(),
                       ),
-                      const SizedBox(
-                        height: 8,
-                      ),
                       const Divider(color: Colors.grey),
                       const Text(
                         'Tujuan',
