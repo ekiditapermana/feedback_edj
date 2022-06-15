@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mo_opendata_v2/screen/clickup_tasklist_screen.dart';
+import 'package:mo_opendata_v2/screen/dashboard_screen.dart';
 import 'package:mo_opendata_v2/screen/home_screen.dart';
-import 'package:mo_opendata_v2/screen/profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
         case 1:
           return const TaskList();
         case 2:
-          return const ProfileScreen();
+          return const DashboardScreen();
         default:
           return const HomeScreen();
       }

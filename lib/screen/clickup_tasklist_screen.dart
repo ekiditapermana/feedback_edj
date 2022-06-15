@@ -114,7 +114,10 @@ class _TaskListState extends State<TaskList> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TaskDetail(task: subtask),
+                      builder: (context) => TaskDetail(
+                        task: subtask,
+                        attachments: taskList[index].attachments,
+                      ),
                     ),
                   );
                 },

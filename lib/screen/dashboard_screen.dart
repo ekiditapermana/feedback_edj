@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mo_opendata_v2/component/loading_indicator.dart';
+
 import 'package:mo_opendata_v2/model/dummy_schedule_model.dart';
-import 'package:mo_opendata_v2/screen/home_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -92,24 +91,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) => const LoadingIndicator(),
-                );
-              },
-              icon: const Icon(Icons.ac_unit)),
-          IconButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()));
-            },
-            icon: const Icon(Icons.list_alt),
-          )
-        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

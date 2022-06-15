@@ -18,7 +18,7 @@ class _SendingOptionState extends State<SendingOption> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: const Text('Send Reply Message'),
+      title: const Text('Send Reply Messages'),
       children: [
         _dialogOption(
             option: 'wa',
@@ -33,7 +33,7 @@ class _SendingOptionState extends State<SendingOption> {
         _dialogOption(
             option: 'sms',
             image: 'icon_sms.png',
-            text: 'Send with Messaging',
+            text: 'Send with SMS',
             onPressed: () {
               final url =
                   'sms:+${widget.feedback.kontak}?body=${widget.feedback.catatanMO}';
