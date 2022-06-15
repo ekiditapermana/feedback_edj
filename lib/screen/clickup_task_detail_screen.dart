@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mo_opendata_v2/model/clickup_model.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 class TaskDetail extends StatefulWidget {
   final Subtask task;
@@ -53,9 +58,35 @@ class _TaskDetailState extends State<TaskDetail> {
 
   String _content = '';
 
+  File? _displayImage;
+
+  Future<void> _download() async {
+    String url = widget.attachments[0].url;
+    final response = await http.get(Uri.parse(url));
+
+    // Get the image name
+    final imageName = path.basename(url);
+    // Get the document directory path
+    final appDir = await path_provider.getApplicationDocumentsDirectory();
+
+    // This is the saved image path
+    // You can use it to display the saved image later
+    final localPath = path.join(appDir.path, imageName);
+
+    // Downloading
+    final imageFile = File(localPath);
+    await imageFile.writeAsBytes(response.bodyBytes);
+
+    setState(() {
+      _displayImage = imageFile;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+
+    _download();
 
     for (var assignee in widget.task.assignees) {
       for (var user in _users) {
@@ -99,34 +130,39 @@ class _TaskDetailState extends State<TaskDetail> {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
+              print(_displayImage);
               showDialog(
                   context: context,
                   builder: (context) {
-                    return Container(
-                      width: 340,
-                      height: 230,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          SizedBox(
-                            height: 32,
-                            width: 90,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                await Share.share(_content);
-                              },
-                              child: const Text('Confirm'),
+                    return SimpleDialog(
+                      contentPadding: EdgeInsets.all(8),
+                      title: const Text('Evidence Photo'),
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _displayImage != null
+                                ? SizedBox(
+                                    height: 150,
+                                    child: Image.file(_displayImage!),
+                                  )
+                                : const SizedBox(),
+                            const SizedBox(
+                              height: 30,
                             ),
-                          ),
-                        ],
-                      ),
+                            SizedBox(
+                              height: 40,
+                              width: 120,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  await Share.shareFiles([_displayImage!.path]);
+                                },
+                                child: const Text('Send'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     );
                   });
             },
