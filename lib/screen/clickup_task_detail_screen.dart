@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mo_opendata_v2/component/loading_indicator.dart';
 import 'package:mo_opendata_v2/model/clickup_model.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:http/http.dart' as http;
@@ -64,16 +65,12 @@ class _TaskDetailState extends State<TaskDetail> {
     String url = widget.attachments[0].url;
     final response = await http.get(Uri.parse(url));
 
-    // Get the image name
     final imageName = path.basename(url);
-    // Get the document directory path
+
     final appDir = await path_provider.getApplicationDocumentsDirectory();
 
-    // This is the saved image path
-    // You can use it to display the saved image later
     final localPath = path.join(appDir.path, imageName);
 
-    // Downloading
     final imageFile = File(localPath);
     await imageFile.writeAsBytes(response.bodyBytes);
 
@@ -130,25 +127,24 @@ class _TaskDetailState extends State<TaskDetail> {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              print(_displayImage);
               showDialog(
                   context: context,
                   builder: (context) {
                     return SimpleDialog(
-                      contentPadding: EdgeInsets.all(8),
+                      contentPadding: const EdgeInsets.all(8),
                       title: const Text('Evidence Photo'),
                       children: [
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _displayImage != null
-                                ? SizedBox(
-                                    height: 150,
-                                    child: Image.file(_displayImage!),
-                                  )
-                                : const SizedBox(),
+                            SizedBox(
+                              height: 150,
+                              child: Image.network(
+                                widget.attachments[0].url,
+                              ),
+                            ),
                             const SizedBox(
-                              height: 30,
+                              height: 16,
                             ),
                             SizedBox(
                               height: 40,
