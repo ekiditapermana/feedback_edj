@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:mo_opendata_v2/component/loading_indicator.dart';
+import 'package:mo_opendata_v2/component/custom_tooltip.dart';
+
 import 'package:mo_opendata_v2/model/clickup_model.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:http/http.dart' as http;
@@ -130,36 +131,7 @@ class _TaskDetailState extends State<TaskDetail> {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return SimpleDialog(
-                      contentPadding: const EdgeInsets.all(8),
-                      title: const Text('Evidence Photo'),
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 150,
-                              child: Image.network(
-                                widget.attachments[0].url,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            SizedBox(
-                              height: 40,
-                              width: 120,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  await Share.shareFiles([_displayImage!.path]);
-                                },
-                                child: const Text('Send'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
+                    return _postDialog();
                   });
             },
             child: Row(
@@ -173,6 +145,80 @@ class _TaskDetailState extends State<TaskDetail> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _postDialog() {
+    return AlertDialog(
+      insetPadding: const EdgeInsets.all(10),
+      contentPadding: const EdgeInsets.all(16),
+      title: const Text('Evidence Photo'),
+      content: SizedBox(
+        height: 400,
+        width: MediaQuery.of(context).size.width - 32,
+        child: Column(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Image.network(
+                widget.attachments[0].url,
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black12),
+                  borderRadius: BorderRadius.circular(4)),
+              padding: const EdgeInsets.all(4.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 300,
+                    padding: const EdgeInsets.all(4),
+                    child: Text(
+                      _content,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomTooltip(
+                      message: 'copied!',
+                      child: const Icon(Icons.copy),
+                      copiedText: _content,
+                    ),
+                  ),
+                  // IconButton(
+                  //   tooltip: 'copied!',
+                  //   onPressed: () async {
+                  //     await FlutterClipboard.copy(_content);
+                  //   },
+                  //   icon: const Icon(
+                  //     Icons.copy,
+                  //   ),
+                  //   splashRadius: 24,
+                  // ),
+                ],
+              ),
+            ),
+            const Spacer(),
+            SizedBox(
+              height: 40,
+              width: 120,
+              child: ElevatedButton(
+                onPressed: () async {
+                  await Share.shareFiles([_displayImage!.path]);
+                },
+                child: const Text('Send'),
+              ),
+            ),
+          ],
         ),
       ),
     );
