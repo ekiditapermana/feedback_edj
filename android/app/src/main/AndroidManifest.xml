@@ -2,7 +2,7 @@
     package="com.example.mo_opendata_v2">
    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="mo_opendata_v2"
+        android:label="Squad MO EDJ"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

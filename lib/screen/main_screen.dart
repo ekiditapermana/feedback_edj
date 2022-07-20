@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mo_opendata_v2/screen/clickup_tasklist_screen.dart';
 import 'package:mo_opendata_v2/screen/dashboard_screen.dart';
 import 'package:mo_opendata_v2/screen/home_screen.dart';
+import 'package:mo_opendata_v2/screen/wa_number_validator.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int index = 0;
+  int index = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,8 @@ class _MainScreenState extends State<MainScreen> {
           return const TaskList();
         case 2:
           return const DashboardScreen();
+        case 3:
+          return const NumberCheck();
         default:
           return const HomeScreen();
       }
@@ -69,6 +72,15 @@ class _MainScreenState extends State<MainScreen> {
               ),
               label: '',
               tooltip: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.checklist,
+                color: index == 3 ? Colors.blue : Colors.grey,
+                size: 30,
+              ),
+              label: '',
+              tooltip: 'Contacts',
             ),
           ],
         ),

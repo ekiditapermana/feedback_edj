@@ -90,45 +90,46 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: const Text('Muhammad Iqbal Ali'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: const [
-                // CircleAvatar(
-                //   backgroundColor: Colors.blue,
-                //   child: Text('I'),
-                // ),
-                // SizedBox(
-                //   width: 10,
-                // ),
+      body: Center(child: Text('Page is under development')),
+      // body: Column(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   children: [
+      //     Padding(
+      //       padding: const EdgeInsets.all(8.0),
+      //       child: Row(
+      //         children: const [
+      //           // CircleAvatar(
+      //           //   backgroundColor: Colors.blue,
+      //           //   child: Text('I'),
+      //           // ),
+      //           // SizedBox(
+      //           //   width: 10,
+      //           // ),
 
-                Text(
-                  'Hallo, Muhammad Iqbal Ali!',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Today',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ),
-          _scheduleListWidget(),
-        ],
-      ),
+      //           Text(
+      //             'Hallo, Muhammad Iqbal Ali!',
+      //             style: TextStyle(
+      //               fontSize: 18,
+      //               fontWeight: FontWeight.bold,
+      //             ),
+      //           )
+      //         ],
+      //       ),
+      //     ),
+      //     const Padding(
+      //       padding: EdgeInsets.all(8.0),
+      //       child: Text(
+      //         'Today',
+      //         style: TextStyle(
+      //           fontSize: 14,
+      //         ),
+      //       ),
+      //     ),
+      //     _scheduleListWidget(),
+      //   ],
+      // ),
     );
   }
 

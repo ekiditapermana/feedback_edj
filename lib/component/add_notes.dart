@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mo_opendata_v2/component/loading_indicator.dart';
 import 'package:mo_opendata_v2/component/response_message.dart';
+import 'package:mo_opendata_v2/screen/main_screen.dart';
 import 'package:mo_opendata_v2/service/feedback_service.dart';
 
 class AddNotes extends StatefulWidget {
@@ -66,7 +67,10 @@ class _AddNotesState extends State<AddNotes> {
           height: 32,
           child: TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainScreen()),
+                  (route) => false);
             },
             child: const Text(
               'Cancel',

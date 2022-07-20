@@ -3,8 +3,11 @@ import 'package:mo_opendata_v2/model/feedback_model.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class SendingOption extends StatefulWidget {
-  final FeedbackModel feedback;
-  const SendingOption({Key? key, required this.feedback}) : super(key: key);
+  final String phoneNumber;
+  final String message;
+  const SendingOption(
+      {Key? key, required this.phoneNumber, required this.message})
+      : super(key: key);
 
   @override
   State<SendingOption> createState() => _SendingOptionState();
@@ -18,7 +21,19 @@ class _SendingOptionState extends State<SendingOption> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: const Text('Send Reply Messages'),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text('Send Reply Messages'),
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.close),
+            splashRadius: 24,
+          )
+        ],
+      ),
       children: [
         _dialogOption(
             option: 'wa',
@@ -26,7 +41,7 @@ class _SendingOptionState extends State<SendingOption> {
             text: 'Send with WhatsApp',
             onPressed: () {
               var url =
-                  'whatsapp://send?phone=${widget.feedback.kontak}&text=${widget.feedback.catatanMO}';
+                  'whatsapp://send?phone=${widget.phoneNumber}&text=${widget.message}';
 
               _launchURL(url: url);
             }),
@@ -35,8 +50,7 @@ class _SendingOptionState extends State<SendingOption> {
             image: 'icon_sms.png',
             text: 'Send with SMS',
             onPressed: () {
-              final url =
-                  'sms:+${widget.feedback.kontak}?body=${widget.feedback.catatanMO}';
+              final url = 'sms:+${widget.phoneNumber}?body=${widget.message}';
 
               _launchURL(url: url);
             }),

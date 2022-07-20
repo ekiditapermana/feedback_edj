@@ -187,7 +187,8 @@ class _FeedbackDetailState extends State<FeedbackDetail> {
                             showDialog(
                               context: context,
                               builder: (context) => SendingOption(
-                                feedback: widget.feedback,
+                                phoneNumber: widget.feedback.kontak,
+                                message: widget.feedback.catatanMO,
                               ),
                             );
                           },
